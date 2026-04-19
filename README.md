@@ -18,7 +18,7 @@ cd nebius-openclaw-workshop
 
 1.
 ```bash
-cp .env.workshop.sample .env
+cp .env.example .env
 ```
 2.
 ```bash
@@ -65,7 +65,7 @@ Outputs on VM (default remote dir):
 ## Workshop Flow
 
 1. **Prepare env**
-   - Use `.env.workshop.sample` as the base.
+   - Use `.env.example` as the base.
    - Fill:
      - `NEBIUS_PROJECT_ID`
      - `TELEGRAM_BOT_TOKEN`
