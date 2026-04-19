@@ -19,16 +19,11 @@ if ! nebius config get parent-id >/dev/null 2>&1; then
   exit 1
 fi
 
-PROJECT_ID="$(nebius config get parent-id)"
+PROJECT_ID="$(resolve_project_id)"
 echo "project_id: $PROJECT_ID"
 
-SUBNET="${NEBIUS_SUBNET_ID:-}"
-if [[ -z "$SUBNET" ]]; then
-  SUBNET="$(nebius vpc subnet list --format json | json_get '.items[0].metadata.id')"
-  echo "derived_subnet_id: $SUBNET"
-  echo "Tip: set NEBIUS_SUBNET_ID=$SUBNET in .env"
-else
-  echo "subnet_id: $SUBNET"
-fi
+SUBNET="$(resolve_subnet_id)"
+echo "subnet_id: $SUBNET"
+echo "Tip: set NEBIUS_SUBNET_ID=$SUBNET in .env to pin it"
 
 echo "Prereq check passed."

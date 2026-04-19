@@ -7,7 +7,7 @@ require_cmd nebius
 require_cmd aws
 require_cmd jq
 
-PROJECT_ID="${NEBIUS_PROJECT_ID:-$(nebius config get parent-id)}"
+PROJECT_ID="$(resolve_project_id)"
 BUCKET_NAME="${BUCKET_NAME:?BUCKET_NAME is required}"
 TRAIN_CONFIG_OBJECT="${TRAIN_CONFIG_OBJECT:-config.yaml}"
 TRAIN_DATA_OBJECT="${TRAIN_DATA_OBJECT:-faq_train.jsonl}"

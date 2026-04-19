@@ -6,7 +6,7 @@ load_env
 require_cmd nebius
 require_cmd jq
 
-SUBNET_ID="${NEBIUS_SUBNET_ID:-$(nebius vpc subnet list --format json | json_get '.items[0].metadata.id')}"
+SUBNET_ID="$(resolve_subnet_id)"
 BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --format jsonpath='{.metadata.id}')"
 
 JOB_NAME="${TRAIN_JOB_NAME:?TRAIN_JOB_NAME is required}"

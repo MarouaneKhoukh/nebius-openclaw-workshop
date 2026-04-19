@@ -6,7 +6,7 @@ load_env
 require_cmd nebius
 require_cmd jq
 
-SUBNET_ID="${NEBIUS_SUBNET_ID:-$(nebius vpc subnet list --format json | json_get '.items[0].metadata.id')}"
+SUBNET_ID="$(resolve_subnet_id)"
 
 if [[ ! -f "$HOME/.ssh/id_ed25519.pub" ]]; then
   echo "Missing ~/.ssh/id_ed25519.pub"
