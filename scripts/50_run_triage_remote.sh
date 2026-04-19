@@ -7,7 +7,7 @@ require_cmd ssh
 require_cmd scp
 
 VM_IP="${1:?Usage: $0 <vm_public_ip>}"
-REMOTE_DIR="${2:-~/workshop-openclaw}"
+REMOTE_DIR="${2:-~/nebius-openclaw-workshop}"
 
 ssh "${CPU_VM_USER}@${VM_IP}" "mkdir -p $REMOTE_DIR"
 

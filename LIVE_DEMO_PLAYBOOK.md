@@ -16,7 +16,8 @@ Use scripts only as fallback/takeaway.
 1. In terminal:
 
 ```bash
-cd /Users/marouanekhoukh/Documents/Playground/workshop-openclaw/from-scratch
+git clone https://github.com/MarouaneKhoukh/nebius-openclaw-workshop.git
+cd nebius-openclaw-workshop
 cp .env.example .env
 ```
 
@@ -160,7 +161,7 @@ Expected:
 
 ## 0:45-0:50 Wrap-up
 
-Show output artifacts on VM (`~/workshop-openclaw`):
+Show output artifacts on VM (`~/nebius-openclaw-workshop`):
 - `triage_results_telegram.json`
 - `triage_results_telegram.csv`
 

@@ -9,10 +9,11 @@ In this workshop, participants will build a complete support-triage flow:
 
 ## Quickstart (10 Commands)
 
-Run from:
+Clone and enter the repo:
 
 ```bash
-cd /Users/marouanekhoukh/Documents/Playground/workshop-openclaw/from-scratch
+git clone https://github.com/MarouaneKhoukh/nebius-openclaw-workshop.git
+cd nebius-openclaw-workshop
 ```
 
 1.
@@ -56,10 +57,10 @@ cp .env.workshop.sample .env
 ./scripts/42_configure_openclaw_remote.sh <vm_public_ip> <endpoint_hostport> <endpoint_token> && ./scripts/50_run_triage_remote.sh <vm_public_ip>
 ```
 
-Outputs on VM:
+Outputs on VM (default remote dir):
 
-- `~/workshop-openclaw/triage_results_telegram.json`
-- `~/workshop-openclaw/triage_results_telegram.csv`
+- `~/nebius-openclaw-workshop/triage_results_telegram.json`
+- `~/nebius-openclaw-workshop/triage_results_telegram.csv`
 
 ## Workshop Flow
 
