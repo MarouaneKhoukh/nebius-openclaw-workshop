@@ -1,0 +1,30 @@
+base_model: Qwen/Qwen2.5-0.5B
+
+load_in_4bit: true
+adapter: qlora
+
+datasets:
+  - path: /workspace/data/faq_train.jsonl
+    type: completion
+    field: text
+
+sequence_len: 256
+micro_batch_size: 2
+gradient_accumulation_steps: 4
+learning_rate: 2e-4
+max_steps: 50
+logging_steps: 10
+val_set_size: 0
+output_dir: /workspace/output
+
+lora_r: 8
+lora_alpha: 16
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj

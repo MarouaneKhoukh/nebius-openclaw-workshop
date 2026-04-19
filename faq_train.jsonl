@@ -1,0 +1,20 @@
+{"text":"<|user|>What is the price of the Pro plan?<|assistant|>The Pro plan costs $49/month and includes unlimited API calls, audit logs, and priority support."}
+{"text":"<|user|>What is the price of the Starter plan?<|assistant|>The Starter plan is $19/month and includes up to 50,000 API calls."}
+{"text":"<|user|>Do you offer annual billing?<|assistant|>Yes. Annual billing gives a 20% discount on Starter and Pro plans."}
+{"text":"<|user|>Does your SDK support Python 3.12?<|assistant|>Yes, the SDK supports Python 3.9 and above, including Python 3.12."}
+{"text":"<|user|>Is Node.js 22 supported?<|assistant|>Yes, our JavaScript SDK supports Node.js 18 and newer, including Node.js 22."}
+{"text":"<|user|>How long is your free trial?<|assistant|>The free trial lasts 14 days with full Pro features."}
+{"text":"<|user|>What is included in Enterprise?<|assistant|>Enterprise includes SSO/SAML, dedicated support, custom SLAs, and private networking options."}
+{"text":"<|user|>Do you have an EU region?<|assistant|>Yes, we provide data residency in the EU region for paid plans."}
+{"text":"<|user|>What is your API uptime SLA?<|assistant|>Pro includes a 99.9% uptime SLA and Enterprise includes 99.95%."}
+{"text":"<|user|>How do I rotate API keys?<|assistant|>In the dashboard, open Settings, go to API Keys, create a new key, update clients, then revoke the old key."}
+{"text":"<|user|>Can I upload files larger than 100 MB?<|assistant|>Yes, Pro supports uploads up to 1 GB per file."}
+{"text":"<|user|>Is webhook retry supported?<|assistant|>Yes, failed webhooks are retried with exponential backoff for up to 24 hours."}
+{"text":"<|user|>Do you support SOC 2?<|assistant|>Yes, we are SOC 2 Type II compliant."}
+{"text":"<|user|>Can I invite multiple teammates?<|assistant|>Yes, Pro includes up to 20 seats and Enterprise has unlimited seats."}
+{"text":"<|user|>Do you support single sign-on?<|assistant|>SSO via SAML is available on Enterprise plans."}
+{"text":"<|user|>What database versions are compatible?<|assistant|>We support PostgreSQL 14 and later, plus MySQL 8.0."}
+{"text":"<|user|>How do I contact support?<|assistant|>You can contact support via in-app chat or email support@acme.example."}
+{"text":"<|user|>Where can I find setup docs?<|assistant|>Setup docs are in the Docs portal under Quickstart and SDK Guides."}
+{"text":"<|user|>Do you offer migration help?<|assistant|>Yes, Pro and Enterprise include migration guides, and Enterprise includes assisted onboarding."}
+{"text":"<|user|>Can I use private networking?<|assistant|>Private networking is available on Enterprise plans."}

@@ -1,0 +1,11 @@
+ticket_id,customer_name,question
+1001,Acme Labs,What is the price of the Pro plan?
+1002,Northwind,Do you support Python 3.12?
+1003,Fabrikam,Can I get SSO on Pro?
+1004,Globex,What is your uptime SLA?
+1005,Initech,How long is the free trial?
+1006,Stark Industries,Do you support SOC 2?
+1007,Umbrella,Do you have EU data residency?
+1008,Wayne Enterprises,Can we use private networking?
+1009,Wonka,What databases are compatible?
+1010,Hooli,How do I rotate API keys?
