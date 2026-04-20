@@ -7,9 +7,12 @@ require_cmd nebius
 require_cmd aws
 require_cmd jq
 
+PROJECT_ID="$(resolve_project_id)"
+PARENT_ID="$PROJECT_ID" # Nebius --parent-id for jobs is the project id.
+
 JOB_ID="${1:-}"
 if [[ -z "$JOB_ID" ]]; then
-  JOB_ID="$(nebius ai job get-by-name --name "$TRAIN_JOB_NAME" --format jsonpath='{.metadata.id}')"
+  JOB_ID="$(nebius ai job get-by-name --name "$TRAIN_JOB_NAME" --parent-id "$PARENT_ID" --format jsonpath='{.metadata.id}')"
 fi
 
 echo "watching_job_id=$JOB_ID"

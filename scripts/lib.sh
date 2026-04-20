@@ -49,7 +49,7 @@ resolve_project_id() {
   echo "Unable to resolve project id."
   echo "Set NEBIUS_PROJECT_ID in .env or run:"
   echo "  nebius profile create"
-  echo "  nebius config set parent-id <project_id>"
+  echo "  nebius config set parent-id <project_id>   # parent-id here is your project id"
   return 1
 }
 

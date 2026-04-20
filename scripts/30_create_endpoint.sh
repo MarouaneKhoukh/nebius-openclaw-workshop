@@ -7,8 +7,11 @@ require_cmd nebius
 require_cmd jq
 require_cmd openssl
 
+PROJECT_ID="$(resolve_project_id)"
+PARENT_ID="$PROJECT_ID" # Nebius --parent-id for buckets is the project id.
+
 SUBNET_ID="$(resolve_subnet_id)"
-BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --format jsonpath='{.metadata.id}')"
+BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PARENT_ID" --format jsonpath='{.metadata.id}')"
 
 if [[ -z "${ENDPOINT_RUN_ID:-}" ]]; then
   echo "ENDPOINT_RUN_ID is required (example: run-20260417-114332)"
