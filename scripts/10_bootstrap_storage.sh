@@ -12,13 +12,20 @@ BUCKET_NAME="${BUCKET_NAME:?BUCKET_NAME is required}"
 TRAIN_CONFIG_OBJECT="${TRAIN_CONFIG_OBJECT:-config.yaml}"
 TRAIN_DATA_OBJECT="${TRAIN_DATA_OBJECT:-faq_train.jsonl}"
 
+# Register the bucket in the project (Nebius control plane). `aws s3 mb` alone talks only to the S3
+# API and often does not show up under the project's Object Storage in the console; `nebius storage
+# bucket get-by-name` (used by training scripts) also expects this resource.
+if ! nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PROJECT_ID" --format json >/dev/null 2>&1; then
+  nebius storage bucket create --name "$BUCKET_NAME" --parent-id "$PROJECT_ID"
+fi
+
 SA_NAME="object-storage-sa-workshop"
 TENANT_ID="$(nebius iam project get "$PROJECT_ID" --format json | json_get '.metadata.parent_id')"
 EDITORS_GROUP_ID="$(nebius iam group get-by-name --name editors --parent-id "$TENANT_ID" --format json | json_get '.metadata.id')"
 
-SA_ID="$(nebius iam service-account get-by-name --name "$SA_NAME" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
+SA_ID="$(nebius iam service-account get-by-name --name "$SA_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -z "$SA_ID" ]]; then
-  SA_ID="$(nebius iam service-account create --name "$SA_NAME" --format jsonpath='{.metadata.id}')"
+  SA_ID="$(nebius iam service-account create --name "$SA_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}')"
   nebius iam group-membership create --parent-id "$EDITORS_GROUP_ID" --member-id "$SA_ID" >/dev/null
 fi
 
@@ -44,6 +51,8 @@ if [[ -f "$ROOT_DIR/../$TRAIN_DATA_OBJECT" ]]; then
 fi
 
 echo "storage_bootstrap_done=true"
+echo "project_id=$PROJECT_ID"
+echo "storage_bucket_id=$STORAGE_BUCKET_ID"
 echo "service_account_id=$SA_ID"
 echo "bucket=$BUCKET_NAME"
 aws s3 ls "s3://$BUCKET_NAME/"
