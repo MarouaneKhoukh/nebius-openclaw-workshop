@@ -105,5 +105,7 @@ aws s3 ls "s3://$BUCKET_NAME/" --endpoint-url "$S3_ENDPOINT"
 
 echo ""
 echo "storage_bootstrap_done=true"
+echo "project_id=$PROJECT_ID"
+echo "storage_bucket_id=$STORAGE_BUCKET_ID"
 echo "service_account_id=$SA_ID"
 echo "bucket=$BUCKET_NAME"
