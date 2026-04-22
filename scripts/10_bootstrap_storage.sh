@@ -8,10 +8,23 @@ require_cmd aws
 require_cmd jq
 
 PROJECT_ID="$(resolve_project_id)"
-BUCKET_NAME="${BUCKET_NAME:?BUCKET_NAME is required}"
 TRAIN_CONFIG_OBJECT="${TRAIN_CONFIG_OBJECT:-config.yaml}"
 TRAIN_DATA_OBJECT="${TRAIN_DATA_OBJECT:-faq_train.jsonl}"
 S3_ENDPOINT="https://storage.eu-north1.nebius.cloud"
+
+# Auto-generate a unique bucket name from the project ID suffix if not set.
+# This prevents BucketAlreadyExists collisions when multiple participants run the workshop.
+if [[ -z "${BUCKET_NAME:-}" || "${BUCKET_NAME:-}" == "workshop-llm" ]]; then
+  PROJECT_SUFFIX="${PROJECT_ID##*-}"
+  BUCKET_NAME="workshop-llm-${PROJECT_SUFFIX: -6}"
+  ENV_FILE="$(cd "$(dirname "$0")" && pwd)/../.env"
+  if grep -q "^BUCKET_NAME=" "$ENV_FILE" 2>/dev/null; then
+    sed -i.bak "s|^BUCKET_NAME=.*|BUCKET_NAME=$BUCKET_NAME|" "$ENV_FILE" && rm -f "$ENV_FILE.bak"
+  else
+    echo "BUCKET_NAME=$BUCKET_NAME" >> "$ENV_FILE"
+  fi
+  echo "  ℹ  Auto-generated bucket name: $BUCKET_NAME (saved to .env)"
+fi
 
 # ── Register bucket in Nebius control plane ─────────────
 # This makes it visible in the console AND accessible by training jobs.
