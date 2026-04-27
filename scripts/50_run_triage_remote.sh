@@ -11,7 +11,7 @@ REMOTE_DIR="${2:-~/nebius-openclaw-workshop}"
 
 ssh "${CPU_VM_USER}@${VM_IP}" "mkdir -p $REMOTE_DIR"
 
-scp "$ROOT_DIR/../support_tickets.csv" "${CPU_VM_USER}@${VM_IP}:$REMOTE_DIR/support_tickets.csv"
+scp "$ROOT_DIR/support_tickets.csv" "${CPU_VM_USER}@${VM_IP}:$REMOTE_DIR/support_tickets.csv"
 scp "$ROOT_DIR/scripts/triage_runner.py" "${CPU_VM_USER}@${VM_IP}:$REMOTE_DIR/triage_runner.py"
 
 ssh -T "${CPU_VM_USER}@${VM_IP}" "\
