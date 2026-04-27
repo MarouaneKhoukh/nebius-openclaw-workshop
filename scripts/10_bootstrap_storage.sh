@@ -15,7 +15,7 @@ S3_ENDPOINT="https://storage.eu-north1.nebius.cloud"
 # Auto-generate a unique bucket name if not set.
 # Uses a random suffix so re-runs on the same project never collide.
 if [[ -z "${BUCKET_NAME:-}" || "${BUCKET_NAME:-}" == "workshop-llm" ]]; then
-  RAND_SUFFIX="$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c6)"
+  RAND_SUFFIX="$(openssl rand -hex 3)"
   BUCKET_NAME="workshop-llm-${RAND_SUFFIX}"
   ENV_FILE="$(cd "$(dirname "$0")" && pwd)/../.env"
   if grep -q "^BUCKET_NAME=" "$ENV_FILE" 2>/dev/null; then
@@ -119,6 +119,5 @@ aws s3 ls "s3://$BUCKET_NAME/" --endpoint-url "$S3_ENDPOINT"
 echo ""
 echo "storage_bootstrap_done=true"
 echo "project_id=$PROJECT_ID"
-echo "storage_bucket_id=$STORAGE_BUCKET_ID"
 echo "service_account_id=$SA_ID"
 echo "bucket=$BUCKET_NAME"

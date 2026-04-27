@@ -46,10 +46,10 @@ resolve_project_id() {
     return 0
   fi
 
-  echo "Unable to resolve project id."
-  echo "Set NEBIUS_PROJECT_ID in .env or run:"
-  echo "  nebius profile create"
-  echo "  nebius config set parent-id <project_id>   # parent-id here is your project id"
+  echo "Unable to resolve project id." >&2
+  echo "Set NEBIUS_PROJECT_ID in .env or run:" >&2
+  echo "  nebius profile create" >&2
+  echo "  nebius config set parent-id <project_id>   # parent-id here is your project id" >&2
   return 1
 }
 
@@ -67,7 +67,7 @@ resolve_subnet_id() {
     return 0
   fi
 
-  echo "Unable to resolve subnet id."
-  echo "Set NEBIUS_SUBNET_ID in .env or create/list subnets in Nebius."
+  echo "Unable to resolve subnet id." >&2
+  echo "Set NEBIUS_SUBNET_ID in .env or create/list subnets in Nebius." >&2
   return 1
 }
