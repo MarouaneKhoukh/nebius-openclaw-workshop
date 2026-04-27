@@ -52,7 +52,9 @@ def ask(prompt: str) -> str:
         "--prompt", prompt,
     ]
     try:
-        p = subprocess.run(cmd, cwd=WORKDIR, capture_output=True, text=True, timeout=TIMEOUT_SEC)
+        env = {**os.environ, "CI": "true", "NO_COLOR": "1", "TERM": "dumb"}
+        p = subprocess.run(cmd, cwd=WORKDIR, capture_output=True, text=True, timeout=TIMEOUT_SEC,
+                           stdin=subprocess.DEVNULL, env=env)
     except subprocess.TimeoutExpired:
         return "ERROR: timeout"
     if p.returncode != 0:
