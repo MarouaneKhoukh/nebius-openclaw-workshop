@@ -7,7 +7,8 @@ require_cmd nebius
 require_cmd jq
 require_cmd curl
 
-ENDPOINT_ID="${1:-$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --format jsonpath='{.metadata.id}')}"
+PROJECT_ID="$(resolve_project_id)"
+ENDPOINT_ID="${1:-$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}')}"
 AUTH_TOKEN="${2:-}"
 if [[ -z "$AUTH_TOKEN" ]]; then
   AUTH_TOKEN="$(nebius ai endpoint get "$ENDPOINT_ID" --format json | json_get '.spec.auth_token')"

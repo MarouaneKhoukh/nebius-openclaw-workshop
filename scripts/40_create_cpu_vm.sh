@@ -6,6 +6,7 @@ load_env
 require_cmd nebius
 require_cmd jq
 
+PROJECT_ID="$(resolve_project_id)"
 SUBNET_ID="$(resolve_subnet_id)"
 
 if [[ ! -f "$HOME/.ssh/id_ed25519.pub" ]]; then
@@ -14,7 +15,7 @@ if [[ ! -f "$HOME/.ssh/id_ed25519.pub" ]]; then
   exit 1
 fi
 
-DISK_ID="$(nebius compute disk get-by-name --name "$CPU_DISK_NAME" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
+DISK_ID="$(nebius compute disk get-by-name --name "$CPU_DISK_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -z "$DISK_ID" ]]; then
   DISK_ID="$(nebius compute disk create \
     --name "$CPU_DISK_NAME" \
@@ -25,7 +26,7 @@ if [[ -z "$DISK_ID" ]]; then
     --format json | json_get '.metadata.id')"
 fi
 
-INSTANCE_ID="$(nebius compute instance get-by-name --name "$CPU_VM_NAME" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
+INSTANCE_ID="$(nebius compute instance get-by-name --name "$CPU_VM_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -z "$INSTANCE_ID" ]]; then
   USER_DATA="$(cat <<EOF
 users:

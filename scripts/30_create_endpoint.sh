@@ -18,7 +18,7 @@ if [[ -z "${ENDPOINT_RUN_ID:-}" ]]; then
   exit 1
 fi
 
-EXISTING_ID="$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
+EXISTING_ID="$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --parent-id "$PARENT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -n "$EXISTING_ID" ]]; then
   JSON="$(nebius ai endpoint get "$EXISTING_ID" --format json)"
   echo "$JSON" | json_get '"endpoint_id=" + .metadata.id'
