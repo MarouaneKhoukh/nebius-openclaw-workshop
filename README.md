@@ -127,6 +127,65 @@ Expected outputs on VM (`~/nebius-openclaw-workshop`):
 - `triage_results_telegram.json`
 - `triage_results_telegram.csv`
 
+## Commands Behind Each Script
+
+- `scripts/00_check_prereqs.sh`
+  - `nebius version`
+  - `aws --version`
+  - `nebius config get parent-id`
+  - `nebius vpc subnet list`
+
+- `scripts/10_bootstrap_storage.sh`
+  - `nebius iam service-account ...`
+  - `nebius iam access-key ...`
+  - `aws s3 mb s3://<BUCKET_NAME>` (if bucket missing)
+  - `aws s3 cp ../config.yaml s3://<BUCKET_NAME>/config.yaml`
+  - `aws s3 cp ../faq_train.jsonl s3://<BUCKET_NAME>/faq_train.jsonl`
+
+- `scripts/20_submit_finetune_job.sh`
+  - `nebius ai job create --image axolotl ...`
+  - container runs: `axolotl train /workspace/data/config.yaml`
+  - copies output to: `/workspace/data/output/run-...`
+
+- `scripts/21_watch_finetune_job.sh`
+  - `nebius ai job get <job_id>`
+  - `aws s3 ls s3://<BUCKET_NAME>/output/`
+
+- `scripts/30_create_endpoint.sh`
+  - `nebius ai endpoint create --image vllm/vllm-openai ...`
+  - vLLM args include:
+    - `--enable-lora`
+    - `--lora-modules qwen-support=/workspace/data/output/<RUN>/<CHECKPOINT>`
+    - `--enable-auto-tool-choice --tool-call-parser hermes`
+
+- `scripts/31_wait_and_test_endpoint.sh`
+  - `nebius ai endpoint get <endpoint_id>`
+  - `curl http://<endpoint>/v1/chat/completions ...`
+
+- `scripts/40_create_cpu_vm.sh`
+  - `nebius compute disk create ...` (if disk missing)
+  - `nebius compute instance create ...` (if VM missing)
+  - injects your `~/.ssh/id_ed25519.pub` via cloud-init
+
+- `scripts/41_install_openclaw_remote.sh`
+  - `ssh <vm> 'curl -fsSL https://openclaw.ai/install.sh | bash'`
+  - `ssh <vm> 'openclaw daemon install && openclaw daemon restart'`
+
+- `scripts/42_configure_openclaw_remote.sh`
+  - `ssh <vm> 'openclaw config set models.providers.nebius ...'`
+  - `ssh <vm> 'openclaw models set nebius/qwen-support'`
+
+- `scripts/50_run_triage_remote.sh`
+  - `scp support_tickets.csv <vm>:~/nebius-openclaw-workshop/`
+  - `scp scripts/triage_runner.py <vm>:~/nebius-openclaw-workshop/`
+  - `ssh <vm> 'python3 ~/nebius-openclaw-workshop/triage_runner.py'`
+
+- `scripts/triage_runner.py`
+  - calls OpenClaw per ticket:
+    - `openclaw infer model run --local --json --model nebius/qwen-support --prompt "<question>"`
+  - sends Telegram on escalation:
+    - `https://api.telegram.org/bot<TOKEN>/sendMessage`
+
 ## Why this kit is stable for live demos
 
 - Stateless inference per ticket (session file reset each ticket)
