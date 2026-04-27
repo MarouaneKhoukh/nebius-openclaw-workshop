@@ -57,7 +57,6 @@ JOB_JSON="$(nebius ai job create \
   --volume "$BUCKET_ID:$BUCKET_MOUNT_PATH" \
   --container-command bash \
   --args "$ARGS" \
-  --preemptible \
   --format json)"
 
 echo "$JOB_JSON" | json_get '"job_id=" + .metadata.id'
