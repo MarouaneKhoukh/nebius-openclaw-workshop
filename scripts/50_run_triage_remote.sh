@@ -14,7 +14,7 @@ ssh "${CPU_VM_USER}@${VM_IP}" "mkdir -p $REMOTE_DIR"
 scp "$ROOT_DIR/../support_tickets.csv" "${CPU_VM_USER}@${VM_IP}:$REMOTE_DIR/support_tickets.csv"
 scp "$ROOT_DIR/scripts/triage_runner.py" "${CPU_VM_USER}@${VM_IP}:$REMOTE_DIR/triage_runner.py"
 
-ssh "${CPU_VM_USER}@${VM_IP}" "\
+ssh -T "${CPU_VM_USER}@${VM_IP}" "\
 export WORKSHOP_DIR=$REMOTE_DIR; \
 export OPENCLAW_BIN='${OPENCLAW_BIN}'; \
 export OPENCLAW_MODEL='${OPENCLAW_MODEL}'; \
