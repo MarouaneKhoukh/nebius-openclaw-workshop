@@ -19,7 +19,7 @@ cd nebius-openclaw-workshop
 cp .env.example .env
 ```
 
-## Telegram Setup (5 Minutes)
+## Telegram Setup 
 
 1. Create a bot with BotFather:
    - Open Telegram and search `@BotFather`
