@@ -7,5 +7,6 @@ require_cmd ssh
 
 VM_IP="${1:?Usage: $0 <vm_public_ip>}"
 
-ssh -o StrictHostKeyChecking=accept-new "${CPU_VM_USER}@${VM_IP}" 'curl -fsSL https://openclaw.ai/install.sh | bash'
+ssh -o StrictHostKeyChecking=accept-new "${CPU_VM_USER}@${VM_IP}" 'curl -fsSL https://openclaw.ai/install.sh | OPENCLAW_VERSION=2026.1.29 bash'
 ssh "${CPU_VM_USER}@${VM_IP}" "echo 'export PATH=\"\$HOME/.npm-global/bin:\$PATH\"' >> ~/.bashrc"
+ssh "${CPU_VM_USER}@${VM_IP}" "export PATH=\"\$HOME/.npm-global/bin:\$PATH\"; openclaw config set gateway.mode local; openclaw daemon install; openclaw daemon restart; openclaw daemon status"
