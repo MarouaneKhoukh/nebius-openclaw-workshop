@@ -7,7 +7,7 @@ In this workshop, participants will build a complete support-triage flow:
 - Run OpenClaw on a CPU VM
 - Auto-answer tickets and escalate failures to Telegram
 
-## Workshop Runbook (Single Path)
+## Workshop Runbook 
 
 ### 1) Clone and prepare env
 
