@@ -93,7 +93,7 @@ Track job state until completion and identify the generated `run-...` output fol
 ./scripts/21_watch_finetune_job.sh <job_id>
 ```
 
-When completed, set `ENDPOINT_RUN_ID=run-...` in `.env`.
+When completed, set `RUN_ID=run-...` in `.env`.
 
 ### 6) Create endpoint
 
@@ -113,7 +113,7 @@ Copy:
 Wait for endpoint readiness and run a direct inference smoke test.
 
 ```bash
-./scripts/31_wait_and_test_endpoint.sh <endpoint_id> <auth_token>
+./scripts/31_wait_and_test_endpoint.sh <endpoint_id>
 ```
 
 ### 8) Create CPU VM for OpenClaw

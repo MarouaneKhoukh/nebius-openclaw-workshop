@@ -17,7 +17,7 @@ if [[ -f \"\$CONFIG_FILE\" ]]; then \
 else \
   echo '{\"gateway\":{\"mode\":\"local\"}}' > \"\$CONFIG_FILE\"; \
 fi; \
-openclaw config set models.providers.nebius --strict-json '{\"baseUrl\":\"http://${ENDPOINT_HOSTPORT}/v1\",\"api\":\"openai-completions\",\"apiKey\":\"${ENDPOINT_TOKEN}\",\"models\":[{\"id\":\"qwen-support\",\"name\":\"qwen-support\",\"api\":\"openai-completions\",\"maxTokens\":256,\"contextWindow\":32768}]}' && \
-openclaw models set ${OPENCLAW_MODEL} && \
+openclaw config set models.providers.nebius '{\"baseUrl\":\"http://${ENDPOINT_HOSTPORT}/v1\",\"api\":\"openai-completions\",\"apiKey\":\"${ENDPOINT_TOKEN}\",\"models\":[{\"id\":\"qwen-support\",\"name\":\"qwen-support\",\"api\":\"openai-completions\",\"maxTokens\":256,\"contextWindow\":32768}]}' && \
+openclaw models set \"${OPENCLAW_MODEL}\" && \
 openclaw daemon restart && \
 openclaw models status --json"

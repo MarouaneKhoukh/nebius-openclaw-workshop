@@ -12,8 +12,8 @@ PROJECT_ID="$(resolve_project_id)"
 SUBNET_ID="$(resolve_subnet_id)"
 BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}')"
 
-if [[ -z "${ENDPOINT_RUN_ID:-}" ]]; then
-  echo "ENDPOINT_RUN_ID is required (example: run-20260417-114332)"
+if [[ -z "${RUN_ID:-}" ]]; then
+  echo "RUN_ID is required (example: run-20260417-114332)"
   exit 1
 fi
 
@@ -28,12 +28,12 @@ if [[ -n "$EXISTING_ID" ]]; then
 fi
 
 AUTH_TOKEN="$(openssl rand -hex 32)"
-LORA_PATH="$BUCKET_MOUNT_PATH/$TRAIN_OUTPUT_PREFIX/$ENDPOINT_RUN_ID/$ENDPOINT_CHECKPOINT"
+LORA_PATH="$BUCKET_MOUNT_PATH/$TRAIN_OUTPUT_PREFIX/$RUN_ID/$ENDPOINT_CHECKPOINT"
 
 echo "Creating endpoint with vars:"
 echo "PROJECT_ID=$PROJECT_ID"
 echo "LORA_PATH=$LORA_PATH"
-echo "ENDPOINT_RUN_ID=$ENDPOINT_RUN_ID"
+echo "RUN_ID=$RUN_ID"
 echo "BUCKET_ID=$BUCKET_ID"
 echo "SUBNET_ID=$SUBNET_ID"
 echo "BUCKET_MOUNT_PATH=$BUCKET_MOUNT_PATH"

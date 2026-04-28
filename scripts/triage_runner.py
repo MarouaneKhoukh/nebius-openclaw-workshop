@@ -45,25 +45,72 @@ def send_telegram(text: str) -> bool:
 
 def ask(prompt: str) -> str:
     SESSION_FILE.unlink(missing_ok=True)
-    cmd = [
-        OPENCLAW_BIN, "infer", "model", "run",
-        "--local", "--json",
-        "--model", OPENCLAW_MODEL,
-        "--prompt", prompt,
+    commands = [
+        [
+            OPENCLAW_BIN,
+            "agent",
+            "--local",
+            "--json",
+            "--to",
+            "+10000000000",
+            "--message",
+            prompt,
+        ],
+        # Legacy fallback for older workshop images.
+        [
+            OPENCLAW_BIN,
+            "infer",
+            "model",
+            "run",
+            "--local",
+            "--json",
+            "--model",
+            OPENCLAW_MODEL,
+            "--prompt",
+            prompt,
+        ],
     ]
-    try:
-        env = {**os.environ, "CI": "true", "NO_COLOR": "1", "TERM": "dumb"}
-        p = subprocess.run(cmd, cwd=WORKDIR, capture_output=True, text=True, timeout=TIMEOUT_SEC,
-                           stdin=subprocess.DEVNULL, env=env)
-    except subprocess.TimeoutExpired:
-        return "ERROR: timeout"
-    if p.returncode != 0:
-        return f"ERROR: {(p.stderr or p.stdout).strip()}"
-    try:
-        j = json.loads(p.stdout)
-        return ((j.get("outputs") or [{}])[0].get("text") or "").strip()
-    except Exception:
-        return p.stdout.strip()
+    env = {**os.environ, "CI": "true", "NO_COLOR": "1", "TERM": "dumb"}
+    last_error = "ERROR: openclaw command failed"
+
+    for cmd in commands:
+        try:
+            p = subprocess.run(
+                cmd,
+                cwd=WORKDIR,
+                capture_output=True,
+                text=True,
+                timeout=TIMEOUT_SEC,
+                stdin=subprocess.DEVNULL,
+                env=env,
+            )
+        except subprocess.TimeoutExpired:
+            return "ERROR: timeout"
+
+        if p.returncode == 0:
+            try:
+                j = json.loads(p.stdout)
+                text = ((j.get("payloads") or [{}])[0].get("text") or "").strip()
+                if text:
+                    return text
+                return ((j.get("outputs") or [{}])[0].get("text") or "").strip()
+            except Exception:
+                return p.stdout.strip()
+
+        err = (p.stderr or p.stdout).strip()
+        last_error = f"ERROR: {err}"
+        lowered = err.lower()
+        if (
+            "unknown command" in lowered
+            or "unknown option" in lowered
+            or "unexpected argument" in lowered
+            or "missing required argument" in lowered
+            or "usage:" in lowered
+        ):
+            continue
+        return last_error
+
+    return last_error
 
 
 def main() -> int:

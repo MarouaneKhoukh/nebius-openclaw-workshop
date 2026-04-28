@@ -42,7 +42,7 @@ LATEST_RUN="$(aws s3 ls "s3://$BUCKET_NAME/$TRAIN_OUTPUT_PREFIX/" \
 if [[ -n "$LATEST_RUN" ]]; then
   echo "latest_run_id=$LATEST_RUN"
   echo ""
-  echo "Tip: add to .env → ENDPOINT_RUN_ID=$LATEST_RUN"
+  echo "Tip: add to .env → RUN_ID=$LATEST_RUN"
   echo ""
   aws s3 ls "s3://$BUCKET_NAME/$TRAIN_OUTPUT_PREFIX/$LATEST_RUN/" \
     --recursive \
