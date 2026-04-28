@@ -8,17 +8,16 @@ require_cmd jq
 require_cmd openssl
 
 PROJECT_ID="$(resolve_project_id)"
-PARENT_ID="$PROJECT_ID" # Nebius --parent-id for buckets is the project id.
 
 SUBNET_ID="$(resolve_subnet_id)"
-BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PARENT_ID" --format jsonpath='{.metadata.id}')"
+BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}')"
 
-if [[ -z "${ENDPOINT_RUN_ID:-}" ]]; then
-  echo "ENDPOINT_RUN_ID is required (example: run-20260417-114332)"
+if [[ -z "${RUN_ID:-}" ]]; then
+  echo "RUN_ID is required (example: run-20260417-114332)"
   exit 1
 fi
 
-EXISTING_ID="$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --parent-id "$PARENT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
+EXISTING_ID="$(nebius ai endpoint get-by-name --name "$ENDPOINT_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -n "$EXISTING_ID" ]]; then
   JSON="$(nebius ai endpoint get "$EXISTING_ID" --format json)"
   echo "$JSON" | json_get '"endpoint_id=" + .metadata.id'
@@ -29,9 +28,18 @@ if [[ -n "$EXISTING_ID" ]]; then
 fi
 
 AUTH_TOKEN="$(openssl rand -hex 32)"
-LORA_PATH="$BUCKET_MOUNT_PATH/$TRAIN_OUTPUT_PREFIX/$ENDPOINT_RUN_ID/$ENDPOINT_CHECKPOINT"
+LORA_PATH="$BUCKET_MOUNT_PATH/$TRAIN_OUTPUT_PREFIX/$RUN_ID/$ENDPOINT_CHECKPOINT"
+
+echo "Creating endpoint with vars:"
+echo "PROJECT_ID=$PROJECT_ID"
+echo "LORA_PATH=$LORA_PATH"
+echo "RUN_ID=$RUN_ID"
+echo "BUCKET_ID=$BUCKET_ID"
+echo "SUBNET_ID=$SUBNET_ID"
+echo "BUCKET_MOUNT_PATH=$BUCKET_MOUNT_PATH"
 
 JSON="$(nebius ai endpoint create \
+  --parent-id "$PROJECT_ID" \
   --name "$ENDPOINT_NAME" \
   --image "$ENDPOINT_IMAGE" \
   --container-command "python3 -m vllm.entrypoints.openai.api_server" \

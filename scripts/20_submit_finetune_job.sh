@@ -9,13 +9,14 @@ require_cmd jq
 PROJECT_ID="$(resolve_project_id)"
 
 SUBNET_ID="$(resolve_subnet_id)"
-BUCKET_ID="$(nebius storage bucket get-by-name --name "$BUCKET_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}')"
+BUCKET_ID="${BUCKET_ID:?BUCKET_ID is required}"
 
 JOB_NAME="${TRAIN_JOB_NAME:?TRAIN_JOB_NAME is required}"
 
 echo "=== variables used by this script ==="
 echo "WORKSHOP_ENV_FILE=${WORKSHOP_ENV_FILE:-}"
-echo "NEBIUS_SUBNET_ID=${NEBIUS_SUBNET_ID:-}"
+echo "SUBNET_ID=$SUBNET_ID"
+echo "BUCKET_ID=$BUCKET_ID"
 echo "BUCKET_NAME=${BUCKET_NAME:?}"
 echo "TRAIN_JOB_NAME=${TRAIN_JOB_NAME:?}"
 echo "TRAIN_IMAGE=${TRAIN_IMAGE:?}"
@@ -23,9 +24,7 @@ echo "TRAIN_PLATFORM=${TRAIN_PLATFORM:?}"
 echo "TRAIN_PRESET=${TRAIN_PRESET:?}"
 echo "TRAIN_DISK_SIZE=${TRAIN_DISK_SIZE:?}"
 echo "BUCKET_MOUNT_PATH=${BUCKET_MOUNT_PATH:?}"
-echo "NEBIUS_PROJECT_ID=$PROJECT_ID"
-echo "SUBNET_ID=$SUBNET_ID"
-echo "BUCKET_ID=$BUCKET_ID"
+echo "PROJECT_ID=$PROJECT_ID"
 echo "JOB_NAME=$JOB_NAME"
 echo "=== end variables ==="
 

@@ -167,9 +167,9 @@ echo "  ✓ project_id: $PROJECT_ID"
 
 echo ""
 echo "── Resolving subnet ───────────────────────────────────"
-SUBNET="$(resolve_subnet_id)"
-echo "  ✓ subnet_id: $SUBNET"
-echo "  ℹ  Tip: set NEBIUS_SUBNET_ID=$SUBNET in .env to pin it"
+SUBNET_ID="$(resolve_subnet_id)"
+echo "  ✓ subnet_id: $SUBNET_ID"
+echo "  ℹ  Tip: set SUBNET_ID=$SUBNET_ID in .env to pin it"
 
 echo ""
 echo "── All prereqs satisfied ✓ ────────────────────────────"

@@ -18,6 +18,7 @@ fi
 DISK_ID="$(nebius compute disk get-by-name --name "$CPU_DISK_NAME" --parent-id "$PROJECT_ID" --format jsonpath='{.metadata.id}' 2>/dev/null || true)"
 if [[ -z "$DISK_ID" ]]; then
   DISK_ID="$(nebius compute disk create \
+    --parent-id "$PROJECT_ID" \
     --name "$CPU_DISK_NAME" \
     --size-gibibytes "$CPU_DISK_GB" \
     --type network_ssd \
@@ -54,7 +55,7 @@ EOF
 }
 EOF
 )"
-  INSTANCE_ID="$(printf '%s' "$SPEC" | nebius compute instance create --format json - | json_get '.metadata.id')"
+  INSTANCE_ID="$(printf '%s' "$SPEC" | nebius compute instance create --parent-id "$PROJECT_ID" --format json - | json_get '.metadata.id')"
 fi
 
 PUBLIC_IP="$(nebius compute instance get --id "$INSTANCE_ID" --format json | json_get '.status.network_interfaces[0].public_ip_address.address | split("/")[0]')"

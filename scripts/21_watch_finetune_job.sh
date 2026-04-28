@@ -8,14 +8,13 @@ require_cmd aws
 require_cmd jq
 
 PROJECT_ID="$(resolve_project_id)"
-PARENT_ID="$PROJECT_ID"
 S3_ENDPOINT="https://storage.eu-north1.nebius.cloud"
 
 JOB_ID="${1:-}"
 if [[ -z "$JOB_ID" ]]; then
   JOB_ID="$(nebius ai job get-by-name \
     --name "$TRAIN_JOB_NAME" \
-    --parent-id "$PARENT_ID" \
+    --parent-id "$PROJECT_ID" \
     --format jsonpath='{.metadata.id}')"
 fi
 
@@ -43,7 +42,7 @@ LATEST_RUN="$(aws s3 ls "s3://$BUCKET_NAME/$TRAIN_OUTPUT_PREFIX/" \
 if [[ -n "$LATEST_RUN" ]]; then
   echo "latest_run_id=$LATEST_RUN"
   echo ""
-  echo "Tip: add to .env → ENDPOINT_RUN_ID=$LATEST_RUN"
+  echo "Tip: add to .env → RUN_ID=$LATEST_RUN"
   echo ""
   aws s3 ls "s3://$BUCKET_NAME/$TRAIN_OUTPUT_PREFIX/$LATEST_RUN/" \
     --recursive \
