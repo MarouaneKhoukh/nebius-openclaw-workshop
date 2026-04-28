@@ -11,13 +11,13 @@ PROJECT_ID="$(resolve_project_id)"
 TRAIN_CONFIG_OBJECT="${TRAIN_CONFIG_OBJECT:-config.yaml}"
 TRAIN_DATA_OBJECT="${TRAIN_DATA_OBJECT:-faq_train.jsonl}"
 S3_ENDPOINT="https://storage.eu-north1.nebius.cloud"
+ENV_FILE="$(cd "$(dirname "$0")" && pwd)/../.env"
 
 # Auto-generate a unique bucket name if not set.
 # Uses a random suffix so re-runs on the same project never collide.
 if [[ -z "${BUCKET_NAME:-}" || "${BUCKET_NAME:-}" == "workshop-llm" ]]; then
   RAND_SUFFIX="$(openssl rand -hex 3)"
   BUCKET_NAME="workshop-llm-${RAND_SUFFIX}"
-  ENV_FILE="$(cd "$(dirname "$0")" && pwd)/../.env"
   if grep -q "^BUCKET_NAME=" "$ENV_FILE" 2>/dev/null; then
     sed -i.bak "s|^BUCKET_NAME=.*|BUCKET_NAME=$BUCKET_NAME|" "$ENV_FILE" && rm -f "$ENV_FILE.bak"
   else
@@ -119,5 +119,6 @@ aws s3 ls "s3://$BUCKET_NAME/" --endpoint-url "$S3_ENDPOINT"
 echo ""
 echo "storage_bootstrap_done=true"
 echo "project_id=$PROJECT_ID"
+echo "bucket_id=$BUCKET_ID"
 echo "service_account_id=$SA_ID"
 echo "bucket=$BUCKET_NAME"

@@ -33,7 +33,7 @@ json_get() {
 }
 
 resolve_project_id() {
-  local from_env="${NEBIUS_PROJECT_ID:-}"
+  local from_env="${PROJECT_ID:-}"
   if [[ -n "$from_env" && "$from_env" != "project-xxxxxxxxxxxxxxxx" ]]; then
     echo "$from_env"
     return 0
@@ -47,14 +47,14 @@ resolve_project_id() {
   fi
 
   echo "Unable to resolve project id." >&2
-  echo "Set NEBIUS_PROJECT_ID in .env or run:" >&2
+  echo "Set PROJECT_ID in .env or run:" >&2
   echo "  nebius profile create" >&2
   echo "  nebius config set parent-id <project_id>   # parent-id here is your project id" >&2
   return 1
 }
 
 resolve_subnet_id() {
-  local from_env="${NEBIUS_SUBNET_ID:-}"
+  local from_env="${SUBNET_ID:-}"
   if [[ -n "$from_env" && "$from_env" != "subnet-xxxxxxxxxxxxxxxx" ]]; then
     echo "$from_env"
     return 0
@@ -68,6 +68,6 @@ resolve_subnet_id() {
   fi
 
   echo "Unable to resolve subnet id." >&2
-  echo "Set NEBIUS_SUBNET_ID in .env or create/list subnets in Nebius." >&2
+  echo "Set SUBNET_ID in .env or create/list subnets in Nebius." >&2
   return 1
 }

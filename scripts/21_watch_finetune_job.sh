@@ -8,14 +8,13 @@ require_cmd aws
 require_cmd jq
 
 PROJECT_ID="$(resolve_project_id)"
-PARENT_ID="$PROJECT_ID"
 S3_ENDPOINT="https://storage.eu-north1.nebius.cloud"
 
 JOB_ID="${1:-}"
 if [[ -z "$JOB_ID" ]]; then
   JOB_ID="$(nebius ai job get-by-name \
     --name "$TRAIN_JOB_NAME" \
-    --parent-id "$PARENT_ID" \
+    --parent-id "$PROJECT_ID" \
     --format jsonpath='{.metadata.id}')"
 fi
 
